@@ -7,6 +7,7 @@ const orderRouter = require("./order.router")
 const userRouters = require("./user.router")
 const contactRouters = require("./contact.router")
 const settingRouters = require("./setting.router")
+const profileRouters = require("./profile.router")
 
 router.use ('/account', accountRouters)
 
@@ -23,5 +24,7 @@ router.use ('/user', userRouters)
 router.use ('/contact', contactRouters)
 
 router.use ('/setting', settingRouters)
+
+router.use ('/profile', profileRouters)
 
 module.exports = router;
