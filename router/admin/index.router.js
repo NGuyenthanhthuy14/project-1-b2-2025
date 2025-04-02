@@ -6,6 +6,7 @@ const tourRouter = require("./tour.router")
 const orderRouter = require("./order.router")
 const userRouters = require("./user.router")
 const contactRouters = require("./contact.router")
+const settingRouters = require("./setting.router")
 
 router.use ('/account', accountRouters)
 
@@ -20,5 +21,7 @@ router.use ('/order', orderRouter)
 router.use ('/user', userRouters)
 
 router.use ('/contact', contactRouters)
+
+router.use ('/setting', settingRouters)
 
 module.exports = router;
