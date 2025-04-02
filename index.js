@@ -4,6 +4,7 @@ const database = require("./config/database")
 require('dotenv').config();
 const adminRouters = require ("./router/admin/index.router")
 const clientRouters = require("./router/client/index.router")
+const variableConfig = require("./config/variable")
 
 const app = express()
 const port = 3000
@@ -18,8 +19,11 @@ app.set('view engine', 'pug')
 // Thiết lập thư mục tĩnh chứa file tĩnh của fontend
 app.use(express.static(path.join(__dirname, "public")))
 
+// Tạo biến toàn cục trong file pug
+app.locals.pathAdmin = variableConfig.pathAdmin
+
 // Thiết lập đường dẫn admin
-app.use ("/admin", adminRouters)
+app.use (`/${variableConfig.pathAdmin}`, adminRouters)
 // Thiết lập đường dẫn client
 app.use ("/", clientRouters)
 
