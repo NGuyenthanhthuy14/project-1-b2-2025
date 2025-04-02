@@ -15,3 +15,15 @@ module.exports.forgotPassword = (req, res) => {
         title: "Quên mật khẩu"
     }) 
 }
+
+module.exports.otpPassword = (req, res) => {
+    res.render("admin/pages/otp-password", {
+        title: "Nhập mã OTP"
+    }) 
+}
+
+module.exports.resetPassword = (req, res) => {
+    res.render("admin/pages/reset-password", {
+        title: "Đổi mật khẩu"
+    }) 
+}
