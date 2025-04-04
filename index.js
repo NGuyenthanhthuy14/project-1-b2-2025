@@ -22,6 +22,11 @@ app.use(express.static(path.join(__dirname, "public")))
 // Tạo biến toàn cục trong file pug
 app.locals.pathAdmin = variableConfig.pathAdmin
 
+// Cho phép gửi data lên dang json
+// chuyển từ json => js
+app.use(express.json())
+
+
 // Thiết lập đường dẫn admin
 app.use (`/${variableConfig.pathAdmin}`, adminRouters)
 // Thiết lập đường dẫn client

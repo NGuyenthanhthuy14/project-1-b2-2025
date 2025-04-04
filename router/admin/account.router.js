@@ -7,6 +7,10 @@ router.get('/login', accountController.login);
 
 router.get('/register', accountController.register)
 
+router.get('/register-initial', accountController.registerInitial)
+
+router.post('/register', accountController.registerPost)
+
 router.get('/forgot-password', accountController.forgotPassword)
 
 router.get('/otp-password', accountController.otpPassword)
