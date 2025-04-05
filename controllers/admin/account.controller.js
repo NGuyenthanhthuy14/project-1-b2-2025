@@ -138,3 +138,11 @@ module.exports.resetPassword = (req, res) => {
         title: "Đổi mật khẩu"
     }) 
 }
+
+module.exports.logoutPost = (req, res) => {
+  res.clearCookie("token")
+  res.json({
+    code: "success",
+    message: "Đăng xuất thành công!"
+  })
+}
