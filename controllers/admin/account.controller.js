@@ -42,7 +42,7 @@ module.exports.loginPost = async (req, res) => {
     id: existAccount.id,
     email: existAccount.email
   }, 
-    proccess.env.JWT_SECRET,
+    process.env.JWT_SECRET,
     {
       // Thời gian hết hạn
       expiresIn: '1d' // token có thời gian là 1 ngày

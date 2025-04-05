@@ -9,25 +9,27 @@ const contactRouters = require("./contact.router")
 const settingRouters = require("./setting.router")
 const profileRouters = require("./profile.router")
 
+const authMiddleware = require ("../../middlewares/admin/auth.middleware")
+
 router.use ('/account', accountRouters)
 
-router.use ('/dashboard', dashboardRouters)
+router.use ('/dashboard',authMiddleware.verifyToken ,dashboardRouters)
 
-router.use ('/category', categoryRouters)
+router.use ('/category', authMiddleware.verifyToken , categoryRouters)
 
-router.use ('/tour', tourRouter)
+router.use ('/tour', authMiddleware.verifyToken ,  tourRouter)
 
-router.use ('/order', orderRouter)
+router.use ('/order',authMiddleware.verifyToken , orderRouter)
 
-router.use ('/user', userRouters)
+router.use ('/user',authMiddleware.verifyToken , userRouters)
 
-router.use ('/contact', contactRouters)
+router.use ('/contact',authMiddleware.verifyToken , contactRouters)
 
-router.use ('/setting', settingRouters)
+router.use ('/setting',authMiddleware.verifyToken , settingRouters)
 
-router.use ('/profile', profileRouters)
+router.use ('/profile',authMiddleware.verifyToken , profileRouters)
 
-router.get ('*', (req, res) => {
+router.get ('*', authMiddleware.verifyToken ,(req, res) => {
     res.render ("admin/pages/error-404", {
         title: "404 Not Found"
     })

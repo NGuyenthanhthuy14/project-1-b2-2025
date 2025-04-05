@@ -5,6 +5,7 @@ require('dotenv').config();
 const adminRouters = require ("./router/admin/index.router")
 const clientRouters = require("./router/client/index.router")
 const variableConfig = require("./config/variable")
+const cookieParser = require('cookie-parser')
 
 const app = express()
 const port = 3000
@@ -22,9 +23,15 @@ app.use(express.static(path.join(__dirname, "public")))
 // Tạo biến toàn cục trong file pug
 app.locals.pathAdmin = variableConfig.pathAdmin
 
+// Tạo biến toàn cục trong file bên backend
+global.pathAdmin = variableConfig.pathAdmin
+
 // Cho phép gửi data lên dang json
 // chuyển từ json => js
 app.use(express.json())
+
+// sử dụng cookie-parser
+app.use(cookieParser())
 
 
 // Thiết lập đường dẫn admin
