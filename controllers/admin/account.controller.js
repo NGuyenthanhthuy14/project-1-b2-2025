@@ -1,5 +1,6 @@
 const AcconutAdmin = require("../../models/account.admin.model")
 const bcrypt = require("bcryptjs")
+const jwt = require('jsonwebtoken');
 
 module.exports.login = async (req, res) => {
     res.render("admin/pages/login", {
@@ -13,6 +14,7 @@ module.exports.loginPost = async (req, res) => {
   const existAccount = await AcconutAdmin.findOne ({
     email: email
   })
+
 
   console.log(email)
   console.log(password)
@@ -35,13 +37,35 @@ module.exports.loginPost = async (req, res) => {
     return;
   }
 
-  if (existAccount != "active"){
+  // Tạo jwt: cho thồn tin mã hoá | và 1 chuỗi bảo mật ngẫu nhiên
+  const token = jwt.sign({ 
+    id: existAccount.id,
+    email: existAccount.email
+  }, 
+    proccess.env.JWT_SECRET,
+    {
+      // Thời gian hết hạn
+      expiresIn: '1d' // token có thời gian là 1 ngày
+    }
+  )
+
+  // Lưu ở trong cookie: thì cả bên frontend và backend đều lấy được
+  res.cookie ("token", token, {
+    maxAge: 24 * 60 * 60 * 1000, // token có hiệu lực trong 1 ngày
+    httpOnly: true,
+    sameSite: "strict" // để bảo vệ trống tấn công giả mạo của 1 trang web
+  })
+
+  if (existAccount.status != "active"){
     res.json({
       code: "error",
       message: "Tài khoàn chưa được kích hoạt"
     })
     return;
   }
+
+
+
   res.json({
     code: "success",
     message: "Đăng nhập thành công"
