@@ -7,6 +7,49 @@ module.exports.login = async (req, res) => {
     })
 }
 
+module.exports.loginPost = async (req, res) => {
+  const {email, password} = req.body;
+
+  const existAccount = await AcconutAdmin.findOne ({
+    email: email
+  })
+
+  console.log(email)
+  console.log(password)
+
+  if (!existAccount) {
+    res.json ({
+      code: "error",
+      message: "Email không tồn tại"
+    })
+    return;
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, existAccount.password);
+
+  if (!isPasswordValid) {
+    res.json({
+      code: "error",
+      message: "Mật khẩu không chính xác!"
+    })
+    return;
+  }
+
+  if (existAccount != "active"){
+    res.json({
+      code: "error",
+      message: "Tài khoàn chưa được kích hoạt"
+    })
+    return;
+  }
+  res.json({
+    code: "success",
+    message: "Đăng nhập thành công"
+  })
+
+
+}
+
 module.exports.register = (req, res) => {
     res.render("admin/pages/register", {
         title: "Đăng ký"
@@ -14,7 +57,7 @@ module.exports.register = (req, res) => {
 }
 
 module.exports.registerPost = async(req, res) => {
-    // Destructuring: phá vỡ cấu trúc của đối tượng req.body
+    // Destructuring: phá vỡ cấu trúc của đối tượng req.body. để lấy đối tương từ body
     const {fullName, email, password} = req.body
 
     const existAccount = await AcconutAdmin.findOne({
