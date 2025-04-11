@@ -9,7 +9,7 @@ module.exports.login = async (req, res) => {
 }
 
 module.exports.loginPost = async (req, res) => {
-  const {email, password} = req.body;
+  const {email, password, rememberPassword} = req.body;
 
   const existAccount = await AcconutAdmin.findOne ({
     email: email
@@ -45,13 +45,13 @@ module.exports.loginPost = async (req, res) => {
     process.env.JWT_SECRET,
     {
       // Thời gian hết hạn
-      expiresIn: '1d' // token có thời gian là 1 ngày
+      expiresIn: rememberPassword ? '30d': '1d' // token có thời gian là 1 ngày
     }
   )
 
   // Lưu ở trong cookie: thì cả bên frontend và backend đều lấy được
   res.cookie ("token", token, {
-    maxAge: 24 * 60 * 60 * 1000, // token có hiệu lực trong 1 ngày
+    maxAge: rememberPassword ? (30 * 24 * 60 * 60 * 1000) :(24 * 60 * 60 * 1000), // token có hiệu lực trong 30 ngày hoặc 1 ngày
     httpOnly: true,
     sameSite: "strict" // để bảo vệ trống tấn công giả mạo của 1 trang web
   })

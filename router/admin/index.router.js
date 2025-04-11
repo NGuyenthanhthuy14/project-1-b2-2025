@@ -11,6 +11,11 @@ const profileRouters = require("./profile.router")
 
 const authMiddleware = require ("../../middlewares/admin/auth.middleware")
 
+router.use ((req, res, next) => {
+    res.setHeader ('Cache-Control', 'no-store');
+    next();
+})
+
 router.use ('/account', accountRouters)
 
 router.use ('/dashboard',authMiddleware.verifyToken ,dashboardRouters)
