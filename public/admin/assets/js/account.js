@@ -202,6 +202,28 @@ if(forgotPasswordForm) {
     .onSuccess((event) => {
       const email = event.target.email.value;
       console.log(email);
+
+      const dataFinal = {
+        email: email
+      }
+
+      fetch (`/${pathAdmin}/account/forgot-password`, {
+        method : "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dataFinal)
+      }) 
+        .then(res => res.json())
+        .then(data => {
+          if (data.code == "error"){
+            alert(data.message)
+          }
+
+          if (data.code == "sussess") {
+            window.location.href = `/${pathAdmin}/account/otp-password`
+          }
+        })
     })
   ;
 }
@@ -222,6 +244,8 @@ if(otpPasswordForm) {
     .onSuccess((event) => {
       const otp = event.target.otp.value;
       console.log(otp);
+
+      
     })
   ;
 }

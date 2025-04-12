@@ -1,6 +1,10 @@
 const AcconutAdmin = require("../../models/account.admin.model")
+const ForgotFassword = require("../../models/forgot-password.model")
 const bcrypt = require("bcryptjs")
 const jwt = require('jsonwebtoken');
+
+const generatehelper = require('../../helpers/generate.helper')
+const mailhelper = require('../../helpers/mail.helper')
 
 module.exports.login = async (req, res) => {
     res.render("admin/pages/login", {
@@ -125,6 +129,62 @@ module.exports.forgotPassword = (req, res) => {
     res.render("admin/pages/forgot-password", {
         title: "Quên mật khẩu"
     }) 
+}
+
+module.exports.forgotPasswordPost = async(req, res) => {
+  
+  const { email } = req.body
+
+  console.log( email)
+
+  // Kiểm tra email có tồn tại hay k
+  const exitAccount = await AcconutAdmin.findOne({
+    email: email,
+  })
+
+  if (!exitAccount) {
+    res.json({
+      code: "error",
+      message: "Email không tồn tại"
+    })
+    return;
+  }
+
+  // email đã tồn tịa trong ForgotFassword hay chưa
+  const exitEmailInForgotFassword = await ForgotFassword.findOne({
+    email: email
+  })
+
+  if (exitEmailInForgotFassword) {
+    res.json({
+      code: "error",
+      message: "Vui lòng gửi lại yêu cầu sau 5p"
+    })
+    return;
+  }
+
+  // Tạo mã OTP
+  const otp = generatehelper.generateRandomNumber(6)
+
+  // Lưu vao database, otp, email. Sau 5p tự động xoá bản ghi đó đi
+  const newRecord = new ForgotFassword({
+    email: email,
+    otp: otp,
+    expireAt: Date.now() + 5 * 60 * 1000
+  })
+
+  await newRecord.save()
+
+  // Gưi mail cho người dùng tự động
+  const subject = `Mã OTP để lấy lại mật khẩu`
+  const content = `OTP của bạn là <b style="color: green">${otp}<b>. Mã OTP có hiệu lực trong 5 phút, vui lòng không cung cấp cho bất kỳ ai.`;
+  mailhelper.sendMail(email, subject, content)
+
+  // gửi mã otp qua email cho người dùng
+  res.json ({
+    code: "sussess",
+    message: "Đã gửi mã OTP"
+  })
 }
 
 module.exports.otpPassword = (req, res) => {
