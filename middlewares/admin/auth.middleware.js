@@ -31,6 +31,8 @@ module.exports.verifyToken = async (req, res, next)=> {
 
         req.account = exitAccount
 
+        res.locals.account = exitAccount
+
         next()
     }
     catch (error) {
