@@ -161,13 +161,37 @@ if(categoryCreateForm) {
         avatar = avatars[0].file;
       }
       const description = tinymce.get("description").getContent();
-      
-      console.log(name);
-      console.log(parent);
-      console.log(position);
-      console.log(status);
-      console.log(avatar);
-      console.log(description);
+
+      // Tạo Form
+      const formData = new FormData();
+      formData.append ("name", name)
+      formData.append ("parent", parent)
+      formData.append ("position", position)
+      formData.append ("status", status)
+      formData.append ("avatar", avatar)
+      formData.append ("description", description)
+
+      fetch (`/${pathAdmin}/category/create`, {
+        method: "POST",
+        body: formData
+      })
+        .then (res => res.json())
+        .then (data => {
+          if (data.code == "error") {
+            alert(data.message);
+          }
+
+          if (data.code == "success") {
+            window.location.href = `/${pathAdmin}/category/list`
+          }
+        })
+
+      // console.log(name);
+      // console.log(parent);
+      // console.log(position);
+      // console.log(status);
+      // console.log(avatar);
+      // console.log(description);
     })
   ;
 }
@@ -235,26 +259,26 @@ if(tourCreateForm) {
       });
       // End schedules
       
-      console.log(name);
-      console.log(category);
-      console.log(position);
-      console.log(status);
-      console.log(avatar);
-      console.log(priceAdult);
-      console.log(priceChildren);
-      console.log(priceBaby);
-      console.log(priceNewAdult);
-      console.log(priceNewChildren);
-      console.log(priceNewBaby);
-      console.log(stockAdult);
-      console.log(stockChildren);
-      console.log(stockBaby);
-      console.log(locations);
-      console.log(time);
-      console.log(vehicle);
-      console.log(departureDate);
-      console.log(information);
-      console.log(schedules);
+      // console.log(name);
+      // console.log(category);
+      // console.log(position);
+      // console.log(status);
+      // console.log(avatar);
+      // console.log(priceAdult);
+      // console.log(priceChildren);
+      // console.log(priceBaby);
+      // console.log(priceNewAdult);
+      // console.log(priceNewChildren);
+      // console.log(priceNewBaby);
+      // console.log(stockAdult);
+      // console.log(stockChildren);
+      // console.log(stockBaby);
+      // console.log(locations);
+      // console.log(time);
+      // console.log(vehicle);
+      // console.log(departureDate);
+      // console.log(information);
+      // console.log(schedules);
     })
   ;
 }
