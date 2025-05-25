@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose
+const slug = require('mongoose-slug-updater')
+mongoose.plugin(slug)
 
 const schema = new mongoose.Schema (
   {
@@ -11,7 +13,11 @@ const schema = new mongoose.Schema (
     description: String,
     createdBy: String,
     updatedBy: Array,
-    slup: String,
+    slup: {
+      type: String,
+      slug: "name",
+      unique: true, // để slug là duy nhất
+    },
     deleted: {
       type: Boolean,
       default: false, // trạng thái chưa bị chuyển vào thùng giác.
