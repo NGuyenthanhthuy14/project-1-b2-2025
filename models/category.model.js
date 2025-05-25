@@ -3,7 +3,7 @@ const { Schema } = mongoose
 const slug = require('mongoose-slug-updater')
 mongoose.plugin(slug)
 
-const schema = new mongoose.Schema (
+const schema = new mongoose.Schema(
   {
     name: String,
     parent: String,
@@ -25,12 +25,12 @@ const schema = new mongoose.Schema (
     },
     deletedBy: String,
     deleteAt: Date
-  }, 
+  },
   {
-      timestamps: true, // Tự động sinh ra trường createdAt và updatedAt
+    timestamps: true, // Tự động sinh ra trường createdAt và updatedAt
   }
 )
 
-const Category = mongoose.model ('Category', schema, 'categories')
+const Category = mongoose.model('Category', schema, 'categories')
 
 module.exports = Category
