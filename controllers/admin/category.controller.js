@@ -176,3 +176,28 @@ module.exports.editPatch = async (req, res) => {
     
 }
 
+module.exports.deletePatch = async (req, res) => {
+    try {
+        const  id = req.params.id
+
+        await Category.updateOne ({
+            _id: id
+        }, {
+            deleted: true,
+            deletedBy: req.account.id,
+            deleteAt: Date.now()
+        })
+
+        req.flash("success", "Xoá thành công!")
+
+        res.json ({
+            code: "success"
+        })
+    } catch (error) {
+        res.json ({
+            code: "error",
+            message: "ID không hợp lệ!"
+        })
+    }
+}
+

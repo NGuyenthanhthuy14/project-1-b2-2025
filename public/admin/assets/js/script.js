@@ -749,3 +749,28 @@ if(categoryEditForm) {
   ;
 }
 // End Category Edit Form
+
+// button Delete
+const listButtonDeletes = document.querySelectorAll('[button-delete]')
+if (listButtonDeletes.length > 0) {
+  listButtonDeletes.forEach(button => {
+    button.addEventListener("click", () => {
+      const dataApi = button.getAttribute("data-api");
+      fetch (dataApi, {
+        method: "PATCH"
+      })
+        .then (res => res.json())
+        .then (data => {
+          if (data.code == "error"){
+            alert(data.message)
+          }
+
+          if (data.code == "success"){
+            window.location.reload();
+          }
+        })
+        
+    })
+  })
+}
+// End button delete
